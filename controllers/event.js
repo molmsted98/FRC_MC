@@ -12,6 +12,11 @@ exports.index = function(req, res) {
 /**
  * GET /authRedirect
  */
+exports.authRedirect = function(req, res) {
+    res.body.client_id = process.env.CLIENT_ID;
+    res.body.scope = "incoming-webhook commands"
+    res.redirect('https://slack.com/oauth/authorize');
+}
 
 /**
  * POST /slack/eventNames
@@ -79,15 +84,11 @@ exports.setupEvent = function(req, res) {
                         attachments: [
                             {
                                 color: "#3AA3E3",
-                                text: blue,
-                                username: 'FRC_Scouting',
-                                channel: req.body.channel_id
+                                text: blue
                             },
                             {
                                 color: "#cc0000",
-                                text: red,
-                                username: 'FRC_Scouting',
-                                channel: req.body.channel_id
+                                text: red
                             }
                         ]
                     };
@@ -104,29 +105,6 @@ exports.setupEvent = function(req, res) {
                     });
                 }
             }
-            /*
-            var slackResponse = {
-                text: "Here is a list of all matches:",
-                attachments: [
-                    {
-                        text: matches,
-                        username: 'FRC_Scouting',
-                        channel: req.body.channel_id
-                    }
-                ]
-            };
-            send(slackResponse, function(error, status, body) {
-                if (error) {
-                    return next(error);
-                } else if (status !== 200)
-                {
-                    return next(new Error('incoming webhook: ' + status));
-                }
-                else {
-                    return res.status(200).end();
-                }
-            });
-            res.send(slackResponse);*/
             return res.status(200).end();
         });
     }
@@ -137,7 +115,8 @@ exports.setupEvent = function(req, res) {
 }
 
 function send (payload, callback) {
-    var uri = 'https://hooks.slack.com/services/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';
+    var webhook = 'T4AR5CF6D/B4B2H4SD6/lScabD2miBF2VyciocJt4HTt';
+    var uri = 'https://hooks.slack.com/services/' + webhook;
     request({
         uri: uri,
         method: 'POST',
@@ -146,7 +125,6 @@ function send (payload, callback) {
         if (error) {
             return callback(error);
         }
-
         callback(null, response.statusCode, body);
     });
 }
