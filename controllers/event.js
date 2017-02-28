@@ -10,6 +10,14 @@ exports.index = function(req, res) {
 };
 
 /**
+ * GET /authRedirect
+ */
+exports.redirect = function(req, res) {
+    var options = {body:{'client_id':process.env.CLIENT_ID, 'clien'}};
+    request.get('https://slack.com/oauth/authorize')
+};
+
+/**
  * POST /slack/eventNames
  */
 exports.getEvents = function(req, res) {
@@ -63,23 +71,37 @@ exports.setupEvent = function(req, res) {
             jsonResponse = JSON.parse(body);
             for (i = 0; i < jsonResponse.length; i ++)
             {
+                /*
                 if (jsonResponse[i].comp_level == "qm")
                 {
                     matches += jsonResponse[i].match_number + '  -  ' + jsonResponse[i].alliances.blue.teams[0] + ', '
                             + jsonResponse[i].alliances.blue.teams[1] + ', ' + jsonResponse[i].alliances.blue.teams[2] + '\n'
                             + jsonResponse[i].alliances.red.teams[0] + ', ' + jsonResponse[i].alliances.red.teams[1] + ', '
                             + jsonResponse[i].alliances.red.teams[2] + '\n' + '\n';
-                }
+                }*/
             }
-            console.log(matches);
+
             var slackResponse = {
                 text: "Here is a list of all matches:",
                 attachments: [
                     {
-                        text: matches
+                        text: matches,
+                        username: 'FRC_Scouting',
+                        channel: req.body.channel_id
                     }
                 ]
             };
+            send(slackResponse, function(error, status, body) {
+                if (error) {
+                    return next(error);
+                } else if (status !== 200)
+                {
+                    return next(new Error('incoming webhook: ' + status));
+                }
+                else {
+                    return res.status(200).end();
+                }
+            });
             res.send(slackResponse);
         });
     }
@@ -87,4 +109,19 @@ exports.setupEvent = function(req, res) {
         //Not a request sent through Slack
         res.send('Only works through Slack.');
     }
+}
+
+function send (payload, callback) {
+    var uri = 'https://hooks.slack.com/services/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';
+    request({
+        uri: uri,
+        method: 'POST'
+        body: JSON.stringify(payload)
+    }, function (error, response, body) {
+        if (error) {
+            return callback(error);
+        }
+
+        callback(null, response.statusCode, body);
+    });
 }
