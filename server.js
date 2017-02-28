@@ -36,6 +36,7 @@ app.get('/', HomeController.index);
 app.get('/contact', contactController.contactGet);
 app.post('/contact', contactController.contactPost);
 app.post('/slack/eventNames', eventController.getEvents);
+app.post('/slack/setup', eventController.setupEvent);
 
 // Production error handler
 if (app.get('env') === 'production') {
