@@ -8,6 +8,7 @@ var flash = require('express-flash');
 var bodyParser = require('body-parser');
 var expressValidator = require('express-validator');
 var dotenv = require('dotenv');
+var fs = require('fs');
 
 // Load environment variables from .env file
 dotenv.load();
@@ -46,8 +47,14 @@ if (app.get('env') === 'production') {
   });
 }
 
-app.listen(app.get('port'), function() {
-  console.log('Express server listening on port ' + app.get('port'));
+//Setup ssl config
+var options = {
+    key: fs.readFileSync('./ssl/privatekey.pem'),
+    cert: fs.readFileSync('./ssl/certificate.pem')
+};
+
+var server = https.createServer(options, app).listen(port, function(){
+    console.log('Express server listening on port ' + port);
 });
 
 module.exports = app;
