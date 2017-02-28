@@ -67,16 +67,37 @@ exports.setupEvent = function(req, res) {
             jsonResponse = JSON.parse(body);
             for (i = 0; i < jsonResponse.length; i ++)
             {
-                
+
                 if (jsonResponse[i].comp_level == "qm")
                 {
-                    matches += jsonResponse[i].match_number + '  -  ' + jsonResponse[i].alliances.blue.teams[0] + ', '
+                    var match = jsonResponse[i].match_number + '  -  ' + jsonResponse[i].alliances.blue.teams[0] + ', '
                             + jsonResponse[i].alliances.blue.teams[1] + ', ' + jsonResponse[i].alliances.blue.teams[2] + '\n'
                             + jsonResponse[i].alliances.red.teams[0] + ', ' + jsonResponse[i].alliances.red.teams[1] + ', '
                             + jsonResponse[i].alliances.red.teams[2] + '\n' + '\n';
+                    var slackResponse = {
+                        text: "Here is a list of all matches:",
+                        attachments: [
+                            {
+                                text: match,
+                                username: 'FRC_Scouting',
+                                channel: req.body.channel_id
+                            }
+                        ]
+                    };
+                    send(slackResponse, function(error, status, body) {
+                        if (error) {
+                            return next(error);
+                        } else if (status !== 200)
+                        {
+                            return next(new Error('incoming webhook: ' + status));
+                        }
+                        else {
+                            return res.status(200).end();
+                        }
+                    });
                 }
             }
-
+            /*
             var slackResponse = {
                 text: "Here is a list of all matches:",
                 attachments: [
@@ -98,7 +119,8 @@ exports.setupEvent = function(req, res) {
                     return res.status(200).end();
                 }
             });
-            res.send(slackResponse);
+            res.send(slackResponse);*/
+            return res.status(200).end();
         });
     }
     else {
