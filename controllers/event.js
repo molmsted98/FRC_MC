@@ -78,6 +78,7 @@ exports.setupEvent = function(req, res) {
                         text: "Match Number " + jsonResponse[i].match_number,
                         attachments: [
                             {
+                                color: "#3AA3E3",
                                 text: match,
                                 username: 'FRC_Scouting',
                                 channel: req.body.channel_id
