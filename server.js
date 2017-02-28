@@ -9,6 +9,7 @@ var bodyParser = require('body-parser');
 var expressValidator = require('express-validator');
 var dotenv = require('dotenv');
 var fs = require('fs');
+var https = require('https');
 
 // Load environment variables from .env file
 dotenv.load();
