@@ -13,9 +13,12 @@ exports.index = function(req, res) {
  * GET /authRedirect
  */
 exports.authRedirect = function(req, res) {
-    res.body.client_id = process.env.CLIENT_ID;
-    res.body.scope = "incoming-webhook commands"
-    res.redirect('https://slack.com/oauth/authorize');
+    response.writeHead(302, {
+        'Location': 'https://slack.com/oauth/authorize',
+        'client_id': process.env.CLIENT_ID,
+        'scope': 'incoming-webhook commands'
+    });
+    response.end();
 }
 
 /**
