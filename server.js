@@ -15,6 +15,7 @@ dotenv.load();
 // Controllers
 var HomeController = require('./controllers/home');
 var contactController = require('./controllers/contact');
+var eventController = require('./controllers/event');
 
 var app = express();
 
@@ -34,6 +35,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.get('/', HomeController.index);
 app.get('/contact', contactController.contactGet);
 app.post('/contact', contactController.contactPost);
+app.post('/slack/eventNames', eventController.getEvents);
 
 // Production error handler
 if (app.get('env') === 'production') {
