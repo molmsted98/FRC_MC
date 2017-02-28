@@ -49,7 +49,7 @@ exports.getEvents = function(req, res) {
 exports.setupEvent = function(req, res) {
     if (req.header.token == process.env.SLACK_TOKEN) {
         var options = {};
-        let eventCode = req.header.text;
+        var eventCode = req.header.text;
         var matches = ''
         console.log(eventCode);
         request.get('https://thebluealliance.com/api/v2/event' + eventCode + '/matches',options,function(err,response,body){
