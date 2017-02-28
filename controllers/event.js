@@ -70,16 +70,22 @@ exports.setupEvent = function(req, res) {
 
                 if (jsonResponse[i].comp_level == "qm")
                 {
-                    var match = jsonResponse[i].alliances.blue.teams[0].toUpperCase() + ', '
+                    var blue = jsonResponse[i].alliances.blue.teams[0].toUpperCase() + ', '
                             + jsonResponse[i].alliances.blue.teams[1].toUpperCase() + ', ' + jsonResponse[i].alliances.blue.teams[2].toUpperCase() + '\n'
-                            + jsonResponse[i].alliances.red.teams[0].toUpperCase() + ', ' + jsonResponse[i].alliances.red.teams[1].toUpperCase() + ', '
-                            + jsonResponse[i].alliances.red.teams[2].toUpperCase();
+                    var red = jsonResponse[i].alliances.red.teams[0].toUpperCase() + ', ' + jsonResponse[i].alliances.red.teams[1].toUpperCase() + ', '
+                    + jsonResponse[i].alliances.red.teams[2].toUpperCase();
                     var slackResponse = {
                         text: "Match Number " + jsonResponse[i].match_number,
                         attachments: [
                             {
                                 color: "#3AA3E3",
-                                text: match,
+                                text: blue,
+                                username: 'FRC_Scouting',
+                                channel: req.body.channel_id
+                            },
+                            {
+                                color: "#cc0000",
+                                text: red,
                                 username: 'FRC_Scouting',
                                 channel: req.body.channel_id
                             }
