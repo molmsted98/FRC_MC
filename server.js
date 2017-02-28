@@ -54,6 +54,8 @@ var options = {
     cert: fs.readFileSync('./ssl/certificate.pem')
 };
 
+var port = 3000;
+
 var server = https.createServer(options, app).listen(port, function(){
     console.log('Express server listening on port ' + port);
 });
