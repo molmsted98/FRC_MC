@@ -36,7 +36,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.get('/', HomeController.index);
 app.get('/contact', contactController.contactGet);
-app.get('/authRedirect', eventController.redirect);
+
 app.post('/contact', contactController.contactPost);
 app.post('/slack/eventNames', eventController.getEvents);
 app.post('/slack/setup', eventController.setupEvent);

@@ -12,10 +12,6 @@ exports.index = function(req, res) {
 /**
  * GET /authRedirect
  */
-exports.redirect = function(req, res) {
-    var options = {body:{'client_id':process.env.CLIENT_ID, 'clien'}};
-    request.get('https://slack.com/oauth/authorize')
-};
 
 /**
  * POST /slack/eventNames
@@ -71,14 +67,14 @@ exports.setupEvent = function(req, res) {
             jsonResponse = JSON.parse(body);
             for (i = 0; i < jsonResponse.length; i ++)
             {
-                /*
+                
                 if (jsonResponse[i].comp_level == "qm")
                 {
                     matches += jsonResponse[i].match_number + '  -  ' + jsonResponse[i].alliances.blue.teams[0] + ', '
                             + jsonResponse[i].alliances.blue.teams[1] + ', ' + jsonResponse[i].alliances.blue.teams[2] + '\n'
                             + jsonResponse[i].alliances.red.teams[0] + ', ' + jsonResponse[i].alliances.red.teams[1] + ', '
                             + jsonResponse[i].alliances.red.teams[2] + '\n' + '\n';
-                }*/
+                }
             }
 
             var slackResponse = {
@@ -115,7 +111,7 @@ function send (payload, callback) {
     var uri = 'https://hooks.slack.com/services/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';
     request({
         uri: uri,
-        method: 'POST'
+        method: 'POST',
         body: JSON.stringify(payload)
     }, function (error, response, body) {
         if (error) {
