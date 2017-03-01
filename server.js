@@ -1,4 +1,3 @@
-const {CLIENT_ID, CLIENT_SECRET} = process.env;
 const SlackStrategy = require('passport-slack').Strategy;
 const passport = require('passport')
 var express = require('express');
@@ -26,8 +25,8 @@ var app = express();
 
 // setup the strategy using defaults
 passport.use(new SlackStrategy({
-    clientID: CLIENT_ID,
-    clientSecret: CLIENT_SECRET,
+    clientID: process.env.CLIENT_ID,
+    clientSecret: process.env.CLIENT_SECRET,
     scope: ['identity.basic', 'channels:read', 'chat:write:user', 'incoming-webhook', 'commands']
   }, (accessToken, refreshToken, profile, done) => {
     // optionally persist profile data
