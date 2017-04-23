@@ -1,0 +1,18 @@
+extends layout
+
+block content
+    .container
+        .panel
+            .panel-heading
+                h3.panel-title Information for Match #{matchCode}
+        .panel
+            .panel-heading
+                h3.panel-title Red Alliance
+            .panel-body
+                h7 #{redTeams[0].toUpperCase()}, #{redTeams[1].toUpperCase()}, #{redTeams[2].toUpperCase()}
+
+        .panel
+            .panel-heading
+                h3.panel-title Blue Alliance
+            .panel-body
+                h7 #{blueTeams[0].toUpperCase()}, #{blueTeams[1].toUpperCase()}, #{blueTeams[2].toUpperCase()}

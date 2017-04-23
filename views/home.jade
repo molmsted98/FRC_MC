@@ -1,36 +1,41 @@
 extends layout
 
 block content
-  .container-fluid
-    if messages.error
-      .alert.alert-danger(role='alert')
-        for error in messages.error
-          div= error.msg
-    if messages.success
-      .alert.alert-success(role='alert')
-        for success in messages.success
-          div= success.msg
-    if messages.info
-      .alert.alert-info(role='alert')
-        for info in messages.info
-          div= info.msg
+  .container
+    .panel
+      .panel-heading
+        h3.panel-title Formatting Help.
+      .panel-body
+        h7.text 
+          :markdown
+            Event codes can be found at this url: [Match Codes](https://www.thebluealliance.com/api/v2/events/2017)
+        h7.text 
+          :markdown
+            Matches codes should be formatted like **f1m1** (Finals 1, Match 1), **sf2m2** (SemiFinal 2, Match 2),
+            **qf4m2** (QuarterFinal 4, Match 2), or **qm16** (Qualifier, Match 16).
+  .container
+    .panel
+      .panel-heading
+        h3.panel-title Find out some history.
+      .panel-body
+        if messages.success
+          .alert.alert-success(role='alert')
+            for success in messages.success
+              div= success.msg
+        if messages.error
+          .alert.alert-danger(role='alert')
+            for error in messages.error
+              div= error.msg
 
-    .row
-      .col-sm-4
-        .panel
-          .panel-body
-            h3 Heading
-            p Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui.
-            a.btn.btn-default(href='#', role='button') View details
-      .col-sm-4
-        .panel
-          .panel-body
-            h3 Heading
-            p Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui.
-            a.btn.btn-default(href='#', role='button') View details
-      .col-sm-4
-        .panel
-          .panel-body
-            h3 Heading
-            p Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui.
-            a.btn.btn-default(href='#', role='button') View details
+        form.form-horizontal(method='POST')
+          .form-group
+            label.col-sm-2(for='eventCode') Event Code
+            .col-sm-8
+              input.form-control(type='text', name='eventCode', id='eventCode', autofocus=true)
+          .form-group
+            label.col-sm-2(for='matchCode') Match Code
+            .col-sm-8
+              input.form-control(type='text', name='matchCode', id='matchCode')
+          .form-group
+            .col-sm-offset-2.col-sm-8
+              button.btn.btn-success(type='submit') Retrieve

@@ -25,6 +25,7 @@
     "nodemailer": "^2.3.0",
     "nodemon": "^1.9.1",
     "npm-run-all": "^1.8.0",
+    "request-promise": "^4.2.0",
     "slackbots": "^1.0.2"
   },
   "devDependencies": {},

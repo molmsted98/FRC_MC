@@ -1,4 +1,3 @@
-const SlackStrategy = require('passport-slack').Strategy;
 const passport = require('passport')
 var express = require('express');
 var path = require('path');
@@ -19,20 +18,9 @@ dotenv.load();
 // Controllers
 var HomeController = require('./controllers/home');
 var contactController = require('./controllers/contact');
-var eventController = require('./controllers/event');
+var matchController = require('./controllers/match1');
 
 var app = express();
-
-// setup the strategy using defaults
-passport.use(new SlackStrategy({
-    clientID: process.env.CLIENT_ID,
-    clientSecret: process.env.CLIENT_SECRET,
-    scope: ['identity.basic', 'channels:read', 'chat:write:user', 'incoming-webhook', 'commands']
-  }, (accessToken, refreshToken, profile, done) => {
-    // optionally persist profile data
-    done(null, profile);
-  }
-));
 
 app.use(passport.initialize());
 app.use(require('body-parser').urlencoded({ extended: true }));
@@ -50,20 +38,10 @@ app.use(flash());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.get('/', HomeController.index);
+app.post('/', HomeController.execute);
+app.get('/match', matchController.index);
 app.get('/contact', contactController.contactGet);
-app.get('/authRedirect', eventController.authRedirect);
 app.post('/contact', contactController.contactPost);
-app.post('/slack/eventNames', eventController.getEvents);
-app.post('/slack/setup', eventController.setupEvent);
-
-// path to start the OAuth flow
-app.get('/auth/slack', passport.authorize('slack'));
-
-// OAuth callback url
-app.get('/auth/slack/callback',
-  passport.authorize('slack', { failureRedirect: '/login' }),
-  (req, res) => res.redirect('/')
-);
 
 // Production error handler
 if (app.get('env') === 'production') {
